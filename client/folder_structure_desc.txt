@@ -1,0 +1,10 @@
+* The src folder - is the root of the application and contains all the source files.
+* The components folder - contains all the reusable components. Components are grouped into subfolders by their type or functionality.
+* The containers folder - contains the stateful components that connect the components to the data and business logic.
+* The context folder  - contains the context providers and consumers used throughout the application.
+* The pages folder - contains the pages of the application. Pages are components that correspond to a specific route in the application.
+* The services folder - contains services, such as APIs, that interact with external systems.
+* The styles folder - contains the styles for the application.
+* The utils folder - contains utility functions and types that are used throughout the application.
+* The index.tsx file - is the entry point for the application and is responsible for rendering the App component.
+* The App.tsx file - is the root component of the application.
