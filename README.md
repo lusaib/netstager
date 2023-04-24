@@ -12,3 +12,7 @@ For setting up backend
 # nodemon index.js
 
 note in somecase the npm install command doesnot install all the dependencies , in that case install the corresponding dependency individually
+
+# running docker
+
+./deploy.sh dev||prod up||down
