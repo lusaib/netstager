@@ -1,0 +1,20 @@
+version: 3.8'
+services:
+  client:
+    image: client-prod-i
+    build:
+      dockerfile: Dockerfile.prod
+    container_name: client-prod-c
+    ports:
+      - "8080:80"
+    environment:
+      - NODE ENV=production
+  server:
+    image: server-prod-i
+    build:
+      dockerfile: Dockerfile.server.prod
+    container_name: server-prod-c
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production

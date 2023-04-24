@@ -1,0 +1,20 @@
+# Use an official Node.js runtime as a parent image
+FROM node:14-alpine as build
+
+# Set the working directory to /netstager_client
+WORKDIR /server
+
+# Copy the package.json and npm.lock files to the container
+COPY package*.json ./
+
+# Install dependencies using npm
+RUN npm install
+
+# Copy the rest of the application code to the container
+COPY . .
+
+# Install Nodemon globally
+RUN npm install -g nodemon
+
+# Start the application using npm
+CMD ["nodemon", "index.js"]

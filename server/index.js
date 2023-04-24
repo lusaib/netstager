@@ -17,7 +17,7 @@ app.use("/pageinfo", pageInfoRoutes);
 
 const CONNECTION_URL =
   "mongodb+srv://lusaib:4XDXJYwe4xBcwSxc@netstager.zv7sykp.mongodb.net/?retryWrites=true&w=majority";
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 
 mongoose
   .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
