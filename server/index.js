@@ -5,6 +5,10 @@ import cors from "cors";
 
 import insightRoutes from "./routes/insight.js";
 import pageInfoRoutes from "./routes/pageInfo.js";
+import manageJwt from "./routes/manageJwt.js";
+
+import { config } from 'dotenv';
+config();
 
 const app = express();
 
@@ -14,6 +18,7 @@ app.use(cors());
 
 app.use("/insight", insightRoutes);
 app.use("/pageinfo", pageInfoRoutes);
+app.use("/jwt", manageJwt);
 
 const CONNECTION_URL =
   "mongodb+srv://lusaib:4XDXJYwe4xBcwSxc@netstager.zv7sykp.mongodb.net/?retryWrites=true&w=majority";

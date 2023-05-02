@@ -30,6 +30,46 @@ async function getPageInfo(url: string) {
   }
 }
 
+//jwt
+async function getJwtToken() {
+  log(LogLevel.INFO, `get jwt token  function called`);
+  try {
+    const response = await axiosInstance.get(`/jwt/encode`);
+    const { token } = response.data;
+    if (response.status !== 200) {
+      throw new Error(`Error: Response status code is ${response.status}.`);
+    }
+    console.log(token);
+    // localStorage.setItem('token' , JSON.stringify(token))
+    // return { token };
+  } catch (e) {
+    log(
+      LogLevel.ERROR,
+      `Some thing went wrong in getJwtToken -  ${JSON.stringify(e)}`
+    );
+  }
+}
+
+async function verfiyJwtToken(jwtToken: string) {
+  log(LogLevel.INFO, `verifyJwtToken function called`);
+  try {
+    const inputData = { jwtToken };
+    // const resp = await axiosInstance.(apiPath.INSIGHT, inputData);
+    const response = await axiosInstance.post(`/jwt/decode`, inputData);
+    const responseData = response.data;
+    if (response.status !== 200) {
+      throw new Error(`Error: Response status code is ${response.status}.`);
+    }
+    console.log(responseData);
+    // return { token };
+  } catch (e) {
+    log(
+      LogLevel.ERROR,
+      `Some thing went wrong in getJwtToken -  ${JSON.stringify(e)}`
+    );
+  }
+}
+
 export default function HomePage() {
   const [url, setUrl] = useState("");
   const [error, setError] = useState({
@@ -233,6 +273,14 @@ export default function HomePage() {
                 onClick={onSubmitEnter}
               >
                 Send
+              </Button>
+              <Button
+                variant="contained"
+                // endIcon={<SendIcon />}
+                sx={{ ml: 3, height: "60px" }}
+                onClick={getJwtToken}
+              >
+                General Jwt
               </Button>
             </Box>
           </Box>
