@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Box, Button, Grid } from "@mui/material";
 import "./styles.css";
 import { FormInputField, LoadingScreen } from "../../components";
@@ -39,8 +39,8 @@ async function getJwtToken() {
     if (response.status !== 200) {
       throw new Error(`Error: Response status code is ${response.status}.`);
     }
-    console.log(token);
-    // localStorage.setItem('token' , JSON.stringify(token))
+    // console.log(token);
+    localStorage.setItem("token", token);
     // return { token };
   } catch (e) {
     log(
@@ -61,6 +61,7 @@ async function verfiyJwtToken(jwtToken: string) {
       throw new Error(`Error: Response status code is ${response.status}.`);
     }
     console.log(responseData);
+    localStorage.clear();
     // return { token };
   } catch (e) {
     log(
@@ -86,6 +87,18 @@ export default function HomePage() {
   });
 
   const [insightList, setInsightList] = useState<Array<insightType>>([]);
+
+  // const token = useMemo(() => {
+  //   return localStorage.getItem("token");
+  // }, [localStorage.getItem("token")]);
+
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  // Listen for changes to localStorage
+  window.addEventListener("storage", (event) => {
+    if (event.key === "token") {
+      setToken(event.newValue);
+    }
+  });
 
   //fetch the insight list
   const fetchInsightList = async () => {
@@ -278,9 +291,9 @@ export default function HomePage() {
                 variant="contained"
                 // endIcon={<SendIcon />}
                 sx={{ ml: 3, height: "60px" }}
-                onClick={getJwtToken}
+                onClick={token ? () => verfiyJwtToken(token) : getJwtToken}
               >
-                General Jwt
+                {token ? "Verfiy token" : "General Jwt"}
               </Button>
             </Box>
           </Box>
