@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useState } from "react";
+import React, { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { Grid } from "@mui/material";
 import "./styles.css";
 import { LoadingScreen } from "../../components";
@@ -50,7 +50,7 @@ export default function CardPage() {
           );
         }
       });
-      setCardList(frmtData);
+      setCardList((e) => [...e, ...frmtData]);
     } catch (e) {
       log(
         LogLevel.ERROR,
@@ -67,8 +67,37 @@ export default function CardPage() {
     setLoading(false);
   };
 
+  const [page, setPage] = useState(1);
+
+  const ref = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     fetchCardList();
+  }, [page]);
+
+  // Load more data when the user scrolls to the bottom
+  const handleObserver = (entities: IntersectionObserverEntry[]) => {
+    const target = entities[0];
+    console.log(target.isIntersecting);
+    if (target.isIntersecting) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleObserver, {
+      root: null,
+      rootMargin: "20px",
+      threshold: 1.0,
+    });
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
   }, []);
 
   return (
@@ -88,7 +117,7 @@ export default function CardPage() {
       >
         {loading &&
           [1, 2, 3, 4].map((e) => (
-            <Grid item xs={4}>
+            <Grid item xs={4} key={e.toString()}>
               <div className="card" style={{ height: 200, width: 400 }}>
                 <div className="skeleton-loading">
                   <div
@@ -105,14 +134,16 @@ export default function CardPage() {
             </Grid>
           ))}
         <Suspense fallback={<div>Loading...</div>}>
-          {cardList.map((e) => (
-            <Grid item xs={4}>
+          {cardList.map((e, i) => (
+            <Grid item xs={4} key={i.toString()}>
               <CardComponent e={e} />
             </Grid>
           ))}
         </Suspense>
       </Grid>
-      {/* <LoadingScreen open={loading} /> */}
+      <div ref={ref}></div>
+
+      <LoadingScreen open={loading} />
       <NotificationSnackbar bar={bar} setBar={setBar} />
     </>
   );
