@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { styled } from "@mui/material/styles";
-import { HomePage } from "./pages";
+import { CardPage, HomePage } from "./pages";
 import background from "./assets/background.svg";
 
 export const AppBackGroundProperties = styled("div")(({ theme }) => ({
@@ -19,6 +19,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route caseSensitive path="/" element={<HomePage />} />
+          <Route caseSensitive path="/card" element={<CardPage />} />
         </Routes>
       </BrowserRouter>
     </AppBackGroundProperties>
